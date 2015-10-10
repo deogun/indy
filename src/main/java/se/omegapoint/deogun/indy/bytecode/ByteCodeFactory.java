@@ -10,15 +10,15 @@ import static org.objectweb.asm.Opcodes.*;
 
 class ByteCodeFactory {
 
-    public static byte[] byteCodeOf(final String className, final String bootstrapFactoryClassName, final String bootstrapMethodName) throws Exception {
+    public static byte[] byteCode(final String className, final String bootstrapFactoryClassName, final String bootstrapMethodName) throws Exception {
 
         final ClassWriter cw = new ClassWriter(0);
 
         classDeclaration(className, cw);
 
-        createDefaultConstructor(cw);
+        defaultConstructor(cw);
 
-        createMethodWithInvokedynamic(bootstrapFactoryClassName, bootstrapMethodName, cw);
+        invokeDynamic("indy", "message", bootstrapFactoryClassName, bootstrapMethodName, cw);
 
         cw.visitEnd();
 
@@ -29,7 +29,7 @@ class ByteCodeFactory {
         cw.visit(V1_7, ACC_PUBLIC + ACC_SUPER, className, null, "java/lang/Object", null);
     }
 
-    private static void createDefaultConstructor(final ClassWriter cw) {
+    private static void defaultConstructor(final ClassWriter cw) {
         final MethodVisitor mv = cw.visitMethod(ACC_PUBLIC, "<init>", "()V", null, null);
 
         mv.visitCode();
@@ -40,17 +40,17 @@ class ByteCodeFactory {
         mv.visitEnd();
     }
 
-    private static void createMethodWithInvokedynamic(final String bootstrapFactoryClassName, final String bootstrapMethodName, final ClassWriter cw) {
-        final MethodVisitor mv = cw.visitMethod(ACC_PUBLIC, "indy", "()V", null, null);
+    private static void invokeDynamic(final String methodName, final String targetMethodName, final String bootstrapFactoryClassName, final String bootstrapMethodName, final ClassWriter cw) {
+        final MethodVisitor mv = cw.visitMethod(ACC_PUBLIC, methodName, "()V", null, null);
 
-        final MethodType mt = MethodType.methodType(CallSite.class, MethodHandles.Lookup.class, String.class, MethodType.class);
+        final MethodType methodType = MethodType.methodType(CallSite.class, MethodHandles.Lookup.class, String.class, MethodType.class);
 
-        final Handle bootstrap = new Handle(H_INVOKESTATIC, bootstrapFactoryClassName, bootstrapMethodName, mt.toMethodDescriptorString());
+        final Handle bootstrap = new Handle(H_INVOKESTATIC, bootstrapFactoryClassName, bootstrapMethodName, methodType.toMethodDescriptorString());
 
         mv.visitCode();
-        mv.visitInvokeDynamicInsn("message", "()V", bootstrap);
+        mv.visitInvokeDynamicInsn(targetMethodName, "()V", bootstrap);
         mv.visitInsn(RETURN);
-        mv.visitMaxs(0, 1);
+        mv.visitMaxs(1, 1);
         mv.visitEnd();
     }
 }

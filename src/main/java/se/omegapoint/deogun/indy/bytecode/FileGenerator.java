@@ -3,7 +3,7 @@ package se.omegapoint.deogun.indy.bytecode;
 import java.io.File;
 import java.io.FileOutputStream;
 
-import static se.omegapoint.deogun.indy.bytecode.ByteCodeFactory.byteCodeOf;
+import static se.omegapoint.deogun.indy.bytecode.ByteCodeFactory.byteCode;
 
 public class FileGenerator {
 
@@ -13,7 +13,7 @@ public class FileGenerator {
     public static void main(String[] args) throws Exception {
         final FileOutputStream fos = new FileOutputStream(new File("target/classes/" + CLASS_NAME + ".class"));
 
-        fos.write(byteCodeOf(CLASS_NAME, BOOTSTRAP_CLASS_NAME, "bootstrap"));
+        fos.write(byteCode(CLASS_NAME, BOOTSTRAP_CLASS_NAME, "bootstrap"));
 
         fos.close();
     }
