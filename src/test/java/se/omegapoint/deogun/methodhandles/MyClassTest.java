@@ -31,7 +31,7 @@ public class MyClassTest {
 
         final MethodHandles.Lookup lookup = MethodHandles.lookup();
 
-        final MethodHandle methodHandle = lookup.findStatic(MyClass.class, "count", methodType);
+        final MethodHandle methodHandle = lookup.findStatic(MyClass.class, "lengthOf", methodType);
 
         //methodHandle.invokeExact("count"); //expected (String)int but found (String)void
         final Integer result = (Integer) methodHandle.invokeExact("count"); //expected (String)int but found (String)Integer
@@ -43,7 +43,7 @@ public class MyClassTest {
 
         final MethodHandles.Lookup lookup = MethodHandles.lookup();
 
-        final MethodHandle methodHandle = lookup.findStatic(MyClass.class, "count", methodType);
+        final MethodHandle methodHandle = lookup.findStatic(MyClass.class, "lengthOf", methodType);
 
         final Integer result = (Integer) methodHandle.invoke("Wazzup Duke!! What's the meaning of life??");
 
