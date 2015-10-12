@@ -1,4 +1,6 @@
-package se.omegapoint.deogun.methodhandles;
+package se.omegapoint.deogun.mh;
+
+import java.lang.invoke.MethodHandles;
 
 class MyClass extends MySuperClass {
     String message;
@@ -13,5 +15,13 @@ class MyClass extends MySuperClass {
 
     void print() {
         System.out.println(message);
+    }
+
+    static MethodHandles.Lookup lookup() {
+        return MethodHandles.lookup();
+    }
+
+    private void printInternal() {
+        System.out.println("Printing private message");
     }
 }

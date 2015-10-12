@@ -30,7 +30,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>se.omegapoint.deogun.indy.Driver</mainClass>
+                            <mainClass>se.omegapoint.deogun.indy.Main</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
